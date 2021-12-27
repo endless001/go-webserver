@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
-	"github.com/justinas/alice"
 	"github.com/gorilla/mux"
+	"github.com/justinas/alice"
+	"log"
 	"net/http"
 	"webserver/middleware"
 )
@@ -13,7 +13,6 @@ type App struct {
 	Middlewares *middleware.Middleware
 	Config      *Env
 }
-
 
 func (a *App) Initialize(e *Env) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
@@ -28,7 +27,7 @@ func (a *App) Initialize(e *Env) {
 func (a *App) InitializeRoter() {
 	m := alice.New(a.Middlewares.LoggingHandler)
 
-	a.Router.Handle("/version", m.ThenFunc(a.version)).Methods("get")
+	a.Router.Handle("/version", m.ThenFunc(a.version)).Methods("post")
 	a.Router.Handle("/healthz", m.ThenFunc(a.healthz)).Methods("get")
 }
 
@@ -36,5 +35,3 @@ func (a *App) InitializeRoter() {
 func (a *App) Run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, a.Router))
 }
-
-
